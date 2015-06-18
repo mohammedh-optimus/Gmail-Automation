@@ -1,0 +1,67 @@
+<?xml version="1.0"?>
+<project basedir="." default="run" name="Automation">
+    
+
+    <property name="src.dir"          value="src"/>
+    <property name="bin.dir"          value="bin"/>
+    <property name="build.dir"        value="build"/>
+    <property name="jar.target.dir"   value="${build.dir}/jars"/>
+    <property name="external.lib.dir" value="libs"/>
+    <property name="main.class"       value="DriverScript"/>
+	<property name="main.class"       value="ReportUtil"/>
+
+    <path id="project.classpath">
+        <fileset dir="${external.lib.dir}">
+            <include name="*.jar"/>
+        </fileset>
+        <fileset dir="${build.dir}">
+        </fileset>
+    </path>
+
+	<target name="clean">
+        <delete dir="${build.dir}"/>
+        <delete dir="${jar.target.dir}"/>
+    </target>
+	
+    <target name="init" depends="clean">
+        <mkdir dir="${build.dir}"/>
+        <mkdir dir="${jar.target.dir}"/>
+    </target>
+
+    <target name="compile" depends="init">
+        <echo message="${ant.project.name}: ${ant.file}"/>
+        <javac includeantruntime="false" destdir="${build.dir}" srcdir="${src.dir}">
+            <classpath refid="project.classpath"/>	    
+        </javac>
+    </target>
+
+    <target name="TestCaseJar" depends="compile">
+        <jar destfile="${jar.target.dir}\automation.jar" basedir="${build.dir}">
+	<zipgroupfileset includes="*.jar" dir="libs"/>
+            <manifest>
+                <attribute name="Main-Class" value="com.automation.test.DriverScript" />
+				
+            </manifest>
+        </jar>
+    </target>
+	
+	
+	  <target name="ReportJar" depends="TestCaseJar">
+        <jar destfile="${jar.target.dir}\Report.jar" basedir="${build.dir}">
+		<zipgroupfileset includes="*.jar" dir="libs"/>
+            <manifest>
+                <attribute name="Main-Class" value="com.automation.util.ReportUtil" />
+            </manifest>
+        </jar>
+    </target>
+    
+    <target name="run" depends="ReportJar">
+        <java jar="${jar.target.dir}\automation.jar" fork="true"/>
+		<java jar="${jar.target.dir}\Report.jar" fork="true"/>
+    </target>
+	
+	 
+	 
+	
+    
+</project>
