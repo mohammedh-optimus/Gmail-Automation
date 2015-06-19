@@ -404,9 +404,9 @@ public class ReportUtil {
 			System.err.println("Error: " + e.getMessage());
 			e.printStackTrace();
 		}
-		Zip.zip(System.getProperty("user.dir") + "/" + ReportUtil.resultFolderName,
+		/*Zip.zip(System.getProperty("user.dir") + "/" + ReportUtil.resultFolderName,
 				CONFIG.getProperty("report_file_name"));
 		
-		SendMail.execute(CONFIG.getProperty("report_file_name"));
+		SendMail.execute(CONFIG.getProperty("report_file_name"));*/
 	}
 }
